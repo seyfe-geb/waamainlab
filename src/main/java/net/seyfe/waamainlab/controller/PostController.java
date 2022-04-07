@@ -24,7 +24,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable("postId")Long postId){
+    public ResponseEntity<PostDto> getPostById(@PathVariable("postId")int postId){
 
         return ResponseEntity.ok(postService.findById(postId));
     }
@@ -41,12 +41,12 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public void deleteById(@PathVariable("postId")Long postId){
+    public void deleteById(@PathVariable("postId")int postId){
         postService.deleteById(postId);
     }
 
     @PutMapping("/{postId}")
-    public void updatePost(@PathVariable("postId") Long postId,
+    public void updatePost(@PathVariable("postId") int postId,
                            @RequestBody Post post){
 
         postService.updatePost(postId, post);

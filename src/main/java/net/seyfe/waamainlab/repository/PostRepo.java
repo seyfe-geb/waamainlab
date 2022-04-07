@@ -1,21 +1,22 @@
 package net.seyfe.waamainlab.repository;
 
 
-import net.seyfe.waamainlab.domain.*;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+
+import net.seyfe.waamainlab.domain.Post;
 
 import java.util.List;
 
-@Repository
-public interface PostRepo extends CrudRepository<Post, Long> {
+
+public interface PostRepo {
     public List<Post> findAll();
 
-    public List<Post> findPostByAuthor(String author);
+    public Post findById(int postId);
 
-    public List<Post> findPostByTitle(String title);
+    public void save(Post post);
 
-//    @Query(value = "SELECT p FROM Post p WHERE p.title = :title")
-//    public List<Post> getPostsThatMatchATitle(String title);
+    public void deleteById(int postId);
 
+    public void updatePost(int postId, Post post);
+
+    public List<Post> getPostByAuthor(String author);
 }
