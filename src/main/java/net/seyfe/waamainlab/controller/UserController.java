@@ -2,7 +2,6 @@ package net.seyfe.waamainlab.controller;
 
 
 
-import net.seyfe.waamainlab.aspect.annotation.ExecutionTime;
 import net.seyfe.waamainlab.domain.Comment;
 import net.seyfe.waamainlab.domain.Post;
 import net.seyfe.waamainlab.domain.User;
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -34,7 +31,6 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    @ExecutionTime
     public ResponseEntity<UserDto> getUserById(@PathVariable("userId")Long userId){
 
         return ResponseEntity.ok(userService.findById(userId));
@@ -105,23 +101,5 @@ public class UserController {
     @GetMapping("/posts-by-title")
     public List<PostDto> getPostsByTitle(@RequestParam("title") String title){
         return postService.getPostsByTitle(title);
-    }
-    @GetMapping("/users-by-post-title")
-    public List<UserDto> getUsersByPostTitle(@RequestParam("title") String title){
-        return userService.getUsersByPostTitle(title);
-    }
-
-    @GetMapping("/exception")
-    public void logExceptionDemo(){
-        try {
-            throw new ArithmeticException("This is a demo exception");
-        }catch (ArithmeticException ae){
-            userService.logException(LocalDate.now(),
-                    LocalTime.now(),
-                    ae.getMessage(),
-                    ae.getClass().getName(),
-                    ae.getClass().getName());
-        }
-
     }
 }

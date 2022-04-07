@@ -1,4 +1,4 @@
-package net.seyfe.waamainlab.util;
+package net.seyfe.waamainlab.helper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

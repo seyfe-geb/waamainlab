@@ -1,17 +1,20 @@
 package net.seyfe.waamainlab.service;
 
 
-import net.seyfe.waamainlab.domain.*;
-import net.seyfe.waamainlab.domain.dto.*;
-import net.seyfe.waamainlab.repository.*;
-import net.seyfe.waamainlab.util.*;
+import net.seyfe.waamainlab.domain.Comment;
+import net.seyfe.waamainlab.domain.Post;
+import net.seyfe.waamainlab.domain.User;
+import net.seyfe.waamainlab.domain.dto.CommentDto;
+import net.seyfe.waamainlab.domain.dto.PostDto;
+import net.seyfe.waamainlab.domain.dto.UserDto;
+import net.seyfe.waamainlab.helper.ListMapper;
+import net.seyfe.waamainlab.repository.PostRepo;
+import net.seyfe.waamainlab.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +26,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PostRepo postRepo;
 
-    @Autowired
-    private ExceptionService exceptionService;
 
     @Autowired
     ModelMapper modelMapper;
@@ -61,12 +62,11 @@ public class UserServiceImpl implements UserService{
         userRepo.deleteById(userId);
     }
 
-
+    @Transactional
     @Override
     public void updateUser(Long userId, User user) {
         User oldUser = userRepo.findById(userId).orElse(null);
         oldUser.setName(user.getName());
-        userRepo.save(oldUser);
     }
 
     @Override
@@ -106,7 +106,6 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public void savePost(Long userId, Post post) {
-//        userRepo.save()
         User user = userRepo.findById(userId).orElse(null);
         user.getPosts().add(post);
     }
@@ -120,15 +119,4 @@ public class UserServiceImpl implements UserService{
                         .findFirst().orElse(null)
                         .getComments().add(comment);
     }
-
-    @Override
-    public void logException(LocalDate date, LocalTime time, String principle, String operation, String exceptionType) {
-        exceptionService.logException(date, time, principle, operation, exceptionType);
-    }
-
-    @Override
-    public List<UserDto> getUsersByPostTitle(String title) {
-        return (List<UserDto>)listMapperUserToUserDto.mapList(userRepo.getUsersByPostTitle(title), new UserDto());
-    }
-
 }

@@ -1,10 +1,12 @@
 package net.seyfe.waamainlab.service;
 
 
-import net.seyfe.waamainlab.domain.*;
-import net.seyfe.waamainlab.domain.dto.*;
-import net.seyfe.waamainlab.repository.*;
-import net.seyfe.waamainlab.util.*;
+import net.seyfe.waamainlab.domain.Comment;
+import net.seyfe.waamainlab.domain.Post;
+import net.seyfe.waamainlab.domain.dto.CommentDto;
+import net.seyfe.waamainlab.helper.ListMapper;
+import net.seyfe.waamainlab.repository.CommentRepo;
+import net.seyfe.waamainlab.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

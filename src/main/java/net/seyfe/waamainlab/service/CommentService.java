@@ -1,8 +1,9 @@
 package net.seyfe.waamainlab.service;
 
 
-import net.seyfe.waamainlab.domain.*;
-import net.seyfe.waamainlab.domain.dto.*;
+
+import net.seyfe.waamainlab.domain.Comment;
+import net.seyfe.waamainlab.domain.dto.CommentDto;
 
 import java.util.List;
 

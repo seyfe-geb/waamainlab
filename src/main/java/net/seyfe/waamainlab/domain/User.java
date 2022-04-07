@@ -1,8 +1,6 @@
 package net.seyfe.waamainlab.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +16,5 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-            @Fetch(FetchMode.SUBSELECT)
     List<Post> posts;
 }
