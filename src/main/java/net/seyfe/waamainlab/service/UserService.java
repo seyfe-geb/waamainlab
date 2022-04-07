@@ -1,11 +1,12 @@
 package net.seyfe.waamainlab.service;
 
 
-import net.seyfe.waamainlab.domain.*;
-import net.seyfe.waamainlab.domain.dto.*;
 
-import java.time.*;
-import java.util.*;
+import net.seyfe.waamainlab.domain.User;
+import net.seyfe.waamainlab.domain.dto.PostDto;
+import net.seyfe.waamainlab.domain.dto.UserDto;
+
+import java.util.List;
 
 public interface UserService {
     List<UserDto> findAll();
@@ -20,19 +21,7 @@ public interface UserService {
 
     public List<UserDto> getPostByUserName(String userName);
 
-    List<PostDto> findPostsByUserId(Long userId);
+    List<PostDto> findPostsById(Long userId);
 
     List<UserDto> getUsersHavingMoreThanOnePost();
-
-    List<CommentDto> findCommentsById(Long userId, Long postId);
-
-    List<PostDto> findPostsByPostId(Long userId, Long postId);
-
-    void savePost(Long userId, Post post);
-
-    void saveComment(Long userId, Long postId, Comment comment);
-
-    void logException(LocalDate date, LocalTime time, String principle, String operation, String exceptionType);
-
-    List<UserDto> getUsersByPostTitle(String title);
 }

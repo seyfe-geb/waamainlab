@@ -3,8 +3,8 @@ package net.seyfe.waamainlab.service;
 
 import net.seyfe.waamainlab.domain.Post;
 import net.seyfe.waamainlab.domain.dto.PostDto;
+import net.seyfe.waamainlab.helper.ListMapper;
 import net.seyfe.waamainlab.repository.PostRepo;
-import net.seyfe.waamainlab.util.ListMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,10 +58,4 @@ public class PostServiceImpl implements PostService{
     public List<PostDto> getPostByAuthor(String author) {
         return (List<PostDto>)listMapperPostToPostDto.mapList(postRepo.findPostByAuthor(author), new PostDto());
     }
-
-    @Override
-    public List<PostDto> getPostsByTitle(String title) {
-        return (List<PostDto>)listMapperPostToPostDto.mapList(postRepo.findPostByTitle(title), new PostDto());
-    }
-
 }
