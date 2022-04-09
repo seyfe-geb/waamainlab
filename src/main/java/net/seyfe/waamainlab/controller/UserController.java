@@ -9,6 +9,10 @@ import net.seyfe.waamainlab.domain.User;
 import net.seyfe.waamainlab.domain.dto.CommentDto;
 import net.seyfe.waamainlab.domain.dto.PostDto;
 import net.seyfe.waamainlab.domain.dto.UserDto;
+import net.seyfe.waamainlab.domain.dto.request.LoginRequest;
+import net.seyfe.waamainlab.domain.dto.request.RefreshTokenRequest;
+import net.seyfe.waamainlab.domain.dto.response.LoginResponse;
+import net.seyfe.waamainlab.service.AuthService;
 import net.seyfe.waamainlab.service.PostService;
 import net.seyfe.waamainlab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
+    @Autowired
+    private AuthService authService;
+
     @Autowired
     private UserService userService;
 

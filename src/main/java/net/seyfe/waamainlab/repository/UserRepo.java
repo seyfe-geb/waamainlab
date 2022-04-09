@@ -18,4 +18,6 @@ public interface UserRepo extends CrudRepository<User, Long> {
 
     @Query(value = "SELECT u FROM  User u JOIN u.posts p where p.title = :title")
     public  List<User> getUsersByPostTitle(@Param("title") String title);
+
+    User findByEmail(String email);
 }

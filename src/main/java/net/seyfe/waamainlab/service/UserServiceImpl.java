@@ -1,12 +1,22 @@
 package net.seyfe.waamainlab.service;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.seyfe.waamainlab.domain.*;
 import net.seyfe.waamainlab.domain.dto.*;
+import net.seyfe.waamainlab.domain.dto.request.LoginRequest;
+import net.seyfe.waamainlab.domain.dto.request.RefreshTokenRequest;
+import net.seyfe.waamainlab.domain.dto.response.LoginResponse;
 import net.seyfe.waamainlab.repository.*;
 import net.seyfe.waamainlab.util.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -65,7 +75,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(Long userId, User user) {
         User oldUser = userRepo.findById(userId).orElse(null);
-        oldUser.setName(user.getName());
+        oldUser.setFirstname(user.getFirstname());
         userRepo.save(oldUser);
     }
 
@@ -130,5 +140,7 @@ public class UserServiceImpl implements UserService{
     public List<UserDto> getUsersByPostTitle(String title) {
         return (List<UserDto>)listMapperUserToUserDto.mapList(userRepo.getUsersByPostTitle(title), new UserDto());
     }
+
+
 
 }

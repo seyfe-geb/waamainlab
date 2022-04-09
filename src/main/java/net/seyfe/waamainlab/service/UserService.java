@@ -3,6 +3,9 @@ package net.seyfe.waamainlab.service;
 
 import net.seyfe.waamainlab.domain.*;
 import net.seyfe.waamainlab.domain.dto.*;
+import net.seyfe.waamainlab.domain.dto.request.LoginRequest;
+import net.seyfe.waamainlab.domain.dto.request.RefreshTokenRequest;
+import net.seyfe.waamainlab.domain.dto.response.LoginResponse;
 
 import java.time.*;
 import java.util.*;
@@ -35,4 +38,5 @@ public interface UserService {
     void logException(LocalDate date, LocalTime time, String principle, String operation, String exceptionType);
 
     List<UserDto> getUsersByPostTitle(String title);
+
 }
