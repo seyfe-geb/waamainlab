@@ -14,7 +14,7 @@ public class JwtUtil {
     private final String secret = "seyfe-secret";
     private final long expiration = 5 * 60 * 60 * 60;
 //     private final long expiration = 5;
-    private final long refreshExpiration = 5 * 60 * 60 * 60 * 60;
+    private final long refreshExpiration =  5 * 60 * 60 * 60 * 60;
 
     // this wil extract a claim from a token, its used in the methods above to get the username and date
     // TODO When this detects the access token is expired it will throw and exception.

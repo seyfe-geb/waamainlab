@@ -7,6 +7,10 @@ import net.seyfe.waamainlab.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/authenticate")
 @CrossOrigin
@@ -25,8 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/refreshToken")
-    public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
-        return authService.refreshToken(refreshTokenRequest);
+    public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletResponse response) throws IOException {
+        return authService.refreshToken(refreshTokenRequest, response);
     }
 
 }

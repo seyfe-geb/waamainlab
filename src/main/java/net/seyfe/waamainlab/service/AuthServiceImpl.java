@@ -1,6 +1,8 @@
 package net.seyfe.waamainlab.service;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.seyfe.waamainlab.domain.dto.request.LoginRequest;
@@ -13,6 +15,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 @RequiredArgsConstructor
@@ -44,21 +57,36 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        boolean isRefreshTokenValid = jwtUtil.validateToken(refreshTokenRequest.getRefreshToken());
-        if (isRefreshTokenValid) {
-            // TODO (check the expiration of the accessToken when request sent, if the is recent according to
-            //  issue Date, then accept the renewal)
-            jwtUtil.getExpirationDateFromToken(refreshTokenRequest.getAccessToken());
+    public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest, HttpServletResponse response) throws IOException {
+        String accessToken = null;
+        LoginResponse loginResponse = null;
+        try{
+            jwtUtil.isTokenExpired(refreshTokenRequest.getRefreshToken());
             var isAccessTokenExpired = jwtUtil.isTokenExpired(refreshTokenRequest.getAccessToken());
-            if(isAccessTokenExpired)
-                System.out.println("ACCESS TOKEN IS EXPIRED"); // TODO Renew is this case
-            else
-                System.out.println("ACCESS TOKEN IS NOT EXPIRED");
-            final String accessToken = jwtUtil.doGenerateToken(  jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
-            var loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
-            // TODO (OPTIONAL) When to renew the refresh token?
+            if(isAccessTokenExpired){
+                accessToken = jwtUtil.doGenerateToken( jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
+                loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
+            }else{
+                System.out.println("ACCESS TOKEN HAS NOT EXPIRED");
+                Map<String, String> result = new HashMap<>();
+                result.put("Info: ", "ACCESS TOKEN HAS NOT EXPIRED");
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), result);
+            }
             return loginResponse;
+        }catch(ExpiredJwtException eje){
+            try{
+                jwtUtil.isTokenExpired(refreshTokenRequest.getRefreshToken());
+                accessToken = jwtUtil.doGenerateToken( jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
+                loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
+                return loginResponse;
+            }catch(ExpiredJwtException eje2){
+                System.out.println("REFRESH TOKEN EXPIRED, LOGIN AGAIN!");
+                Map<String, String> result = new HashMap<>();
+                result.put("Error: ", "REFRESH TOKEN EXPIRED, LOGIN AGAIN!");
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), result);
+            }
         }
         return new LoginResponse();
     }

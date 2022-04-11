@@ -35,16 +35,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/authenticate").permitAll()
-                .antMatchers("/api/v1/users", "/api/v1/users/**", "/api/v1/admin").hasAuthority("ADMIN")
-                .antMatchers("/api/v1/users", "/api/v1/users/**").hasAuthority("USER")
+                .antMatchers("/api/v1/authenticate", "/api/v1/authenticate/refreshToken").permitAll()
+                .antMatchers("/api/v1/users", "/api/v1/users/**").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/api/v1/admin").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 
